@@ -6,3 +6,10 @@ class vendorSerializers(serializers.ModelSerializer):
     class Meta:
         model = purchase_order
         fields = "__all__"
+
+
+class orderlinesSerializers(serializers.ModelSerializer):
+    
+    class Meta:
+        model = purchase_order_lines
+        fields = "__all__"
