@@ -12,7 +12,7 @@ https://docs.djangoproject.com/en/2.2/ref/settings/
 
 import os
 import django_heroku
-
+from secret import *
 # Build paths inside the project like this: os.path.join(BASE_DIR, ...)
 BASE_DIR = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
 
@@ -42,7 +42,9 @@ INSTALLED_APPS = [
     'tweets',
     'storages',
     'vendor',
-    'rest_framework'
+    'rest_framework',
+    'article',
+    'rest_framework.authtoken'
 ]
 
 MIDDLEWARE = [

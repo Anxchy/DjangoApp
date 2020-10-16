@@ -14,7 +14,7 @@ Including another URLconf
     2. Add a URL to urlpatterns:  path('blog/', include('blog.urls'))
 """
 from django.contrib import admin
-from django.urls import path
+from django.urls import path, include
 from tweets.views import home_view,tweets_detail_view,tweets_list_view
 from vendor.views import vendorCreate
 
@@ -23,7 +23,8 @@ urlpatterns = [
     path('', home_view),
     path('tweetlist/', tweets_list_view),
     path('tweetdetail/req/<int:tid>', tweets_detail_view),
-    path('vendor/',vendorCreate.as_view())
+    path('vendor/',vendorCreate.as_view()),
+    path('', include('article.urls'))
 ]
 
 
