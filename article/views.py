@@ -5,7 +5,7 @@ from rest_framework.parsers import JSONParser
 from .models import Article
 from .serializers import ArticleSerializer
 from rest_framework.response import Response
-from rest_framework.decorators import api_view
+from rest_framework.decorators import api_view, permission_classes, authentication_classes
 from rest_framework import status
 from rest_framework.views import APIView
 from rest_framework import mixins
@@ -19,6 +19,8 @@ from django.shortcuts import get_object_or_404
 #modelViewSet 
 '''very simple to do all methods just using 2 line of code'''
 class modelViewSet(viewsets.ModelViewSet):
+    authentication_classes = [TokenAuthentication]
+    permission_classes = [IsAuthenticated]
     serializer_class = ArticleSerializer
     queryset = Article.objects.all()  
 
@@ -37,6 +39,8 @@ class genercicViewSet(viewsets.GenericViewSet, mixins.ListModelMixin,
 
 #viewset and routers
 class ArticleViewSet(viewsets.ViewSet):
+    authentication_classes = [TokenAuthentication]
+    permission_classes = [IsAuthenticated]
     def list(self, request):
         articleData=Article.objects.all()
         serializer=ArticleSerializer(articleData, many=True)
@@ -95,6 +99,8 @@ class GenericApiDetail(generics.GenericAPIView, mixins.RetrieveModelMixin,
                         mixins.DestroyModelMixin, mixins.UpdateModelMixin):
     queryset = Article.objects.all()
     serializer_class = ArticleSerializer
+    authentication_classes = [TokenAuthentication]
+    permission_classes = [IsAuthenticated]
 
     def get(self, request, *args, **kwargs):
         return self.retrieve(request, *args, **kwargs)
@@ -113,6 +119,8 @@ class GenericApiDetail(generics.GenericAPIView, mixins.RetrieveModelMixin,
 
 #class based view
 class ArticleList(APIView):
+    authentication_classes = [TokenAuthentication]
+    permission_classes = [IsAuthenticated]
     def get(self, request, format=None):
         articleData=Article.objects.all()
         serializer=ArticleSerializer(articleData, many=True)
@@ -127,6 +135,8 @@ class ArticleList(APIView):
 
 #class based view
 class Articledetail(APIView):
+    authentication_classes = [TokenAuthentication]
+    permission_classes = [IsAuthenticated]
     def get_object(self, id):
         try:
             return Article.objects.get(pk=id)
@@ -156,6 +166,8 @@ class Articledetail(APIView):
 
 #function based view
 @api_view(['GET','POST'])
+@authentication_classes((SessionAuthentication, BasicAuthentication))
+@permission_classes((IsAuthenticated,))
 def article_list(request):
     if request.method == 'GET':
         articleData=Article.objects.all()
@@ -172,7 +184,10 @@ def article_list(request):
         return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
 
 #function based view
+#customized authentications session based and basic authentication
 @api_view(['GET','PUT','DELETE'])
+@authentication_classes((SessionAuthentication, BasicAuthentication))
+@permission_classes((IsAuthenticated,))
 def article_detail(request, pk):
     try:
         articleData = Article.objects.get(pk=pk)

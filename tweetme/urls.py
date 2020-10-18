@@ -23,7 +23,7 @@ urlpatterns = [
     path('', home_view),
     path('tweetlist/', tweets_list_view),
     path('tweetdetail/req/<int:tid>', tweets_detail_view),
-    path('vendor/',vendorCreate.as_view()),
+    #path('vendor/',vendorCreate.as_view()),
     path('', include('article.urls'))
 ]
 
