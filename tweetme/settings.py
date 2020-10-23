@@ -14,6 +14,9 @@ import os
 import dotenv
 import django_heroku
 from secret import *
+from dotenv import load_dotenv
+load_dotenv()
+
 # Build paths inside the project like this: os.path.join(BASE_DIR, ...)
 BASE_DIR = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
 
@@ -25,16 +28,22 @@ BASE_DIR = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
 
 
 #using dotenv
+#pip install python-dotenv
 dotenv_file = os.path.join(BASE_DIR, ".env")
 if os.path.isfile(dotenv_file):
     dotenv.load_dotenv(dotenv_file)
 
 
 SECRET_KEY = os.environ.get('SECRET_KEY')
-#SECRET_KEY='@dh9+)=(s6p0$^1y%)$y(fohvuk-(3u*thwzud=w)e_ca21-b&'
+
 
 # SECURITY WARNING: don't run with debug turned on in production!
-DEBUG = True
+
+try:
+    DEBUG = os.getenv('DEBUG')
+except ImportError:
+    DEBUG = False
+
 
 ALLOWED_HOSTS = ['anxchyapp.herokuapp.com' ,'localhost', '127.0.0.1']
 
